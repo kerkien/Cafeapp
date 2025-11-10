@@ -13,6 +13,24 @@
         android:theme="@style/Theme.CafeApp"
         tools:targetApi="31">
         <activity
+            android:name=".Loginactivity"
+            android:exported="false" />
+        <activity
+            android:name=".QRScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Landingactivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuForTableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuPreviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SetupTablesActivity"
+            android:exported="false" />
+        <activity
             android:name=".addmenuitem"
             android:exported="false" />
         <activity
