@@ -1,0 +1,15 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Semi-transparent background -->
+    <solid android:color="#50FFFFFF" /> <!-- 50 = 50% opacity white -->
+
+    <!-- Optional border -->
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF" />
+
+    <!-- Rounded corners -->
+    <corners android:radius="8dp" />
+
+</shape>
