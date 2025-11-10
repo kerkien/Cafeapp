@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Loginactivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
-    private Button btnLogin;
+    private Button btnLogin, btnClient, btnAdmin;
     private FirebaseAuth mAuth;
 
     @Override
@@ -24,10 +24,22 @@ public class Loginactivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        btnClient = findViewById(R.id.btnClient);
+        btnAdmin = findViewById(R.id.btnAdmin);
 
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> loginAdmin());
+
+        btnClient.setOnClickListener(v -> {
+            startActivity(new Intent(Loginactivity.this, Landingactivity.class));
+            finish(); // ✅ Removes Login from back stack
+        });
+
+        btnAdmin.setOnClickListener(v -> {
+            // Currently launches same activity - change this later
+            startActivity(new Intent(this, Loginactivity.class));
+        });
     }
 
     private void loginAdmin() {
@@ -43,7 +55,6 @@ public class Loginactivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(Loginactivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        // Navigate to MainActivity (admin panel)
                         startActivity(new Intent(Loginactivity.this, MainActivity.class));
                         finish();
                     } else {

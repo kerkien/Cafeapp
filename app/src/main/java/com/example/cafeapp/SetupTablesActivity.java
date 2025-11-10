@@ -1,40 +1,67 @@
 package com.example.cafeapp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-public class SetupTablesActivity extends AppCompatActivity {
+public class SetupTablesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText edtTableCount;
     private Button btnGenerate;
     private LinearLayout layoutQrContainer;
     private FirebaseFirestore db;
 
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_tables);
 
+        // Setup toolbar and drawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Original setup logic
         edtTableCount = findViewById(R.id.edtTableCount);
         btnGenerate = findViewById(R.id.btnGenerate);
         layoutQrContainer = findViewById(R.id.layoutQrContainer);
 
         db = FirebaseFirestore.getInstance();
-
         btnGenerate.setOnClickListener(v -> generateTableQRCodes());
     }
 
@@ -46,7 +73,7 @@ public class SetupTablesActivity extends AppCompatActivity {
         }
 
         int count = Integer.parseInt(input);
-        layoutQrContainer.removeAllViews(); // Clear previous QR codes
+        layoutQrContainer.removeAllViews();
 
         for (int i = 1; i <= count; i++) {
             String tableId = "Table_" + i;
@@ -54,21 +81,18 @@ public class SetupTablesActivity extends AppCompatActivity {
 
             Bitmap qrBitmap = generateQRCode(qrContent);
             if (qrBitmap != null) {
-                // Display table label
                 TextView txtTable = new TextView(this);
                 txtTable.setText("Table " + i);
                 txtTable.setTextSize(16);
                 txtTable.setPadding(0, 16, 0, 8);
                 layoutQrContainer.addView(txtTable);
 
-                // Display QR code
                 ImageView qrImage = new ImageView(this);
                 qrImage.setImageBitmap(qrBitmap);
                 qrImage.setPadding(0, 0, 0, 16);
                 layoutQrContainer.addView(qrImage);
 
-                // Save table info to Firestore
-                int finalI = i; // For Toast inside listener
+                int finalI = i;
                 db.collection("tables").document(tableId)
                         .set(new Table(tableId, qrContent))
                         .addOnSuccessListener(aVoid ->
@@ -100,16 +124,40 @@ public class SetupTablesActivity extends AppCompatActivity {
         }
     }
 
-    // 🔹 Table model for Firestore
     public static class Table {
         public String id;
         public String qrLink;
 
-        public Table() {} // Required by Firestore
-
+        public Table() {}
         public Table(String id, String qrLink) {
             this.id = id;
             this.qrLink = qrLink;
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_create_menu) {
+            // Navigate to Create Menu screen (MainActivity)
+            startActivity(new Intent(this, MainActivity.class));
+        } else if (id == R.id.nav_tables) {
+            // Already here (SetupTablesActivity)
+        } else if (id == R.id.nav_preview) {
+            startActivity(new Intent(this, MenuPreviewActivity.class));
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 }

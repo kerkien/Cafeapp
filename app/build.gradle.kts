@@ -13,7 +13,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,17 +39,15 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx")
+    // ✅ FIXED: Firebase with explicit versions (NO BoM, NO version catalog)
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
 
-    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
-    implementation ("com.google.zxing:core:3.5.2")
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
+    // ZXing
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.zxing:core:3.5.2")
 
     // Testing
     testImplementation(libs.junit)

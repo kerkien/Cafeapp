@@ -28,9 +28,6 @@ public class MenuItemAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
     }
 
-    public MenuItemAdapter(MainActivity context, ArrayList<android.view.MenuItem> menuItems) {
-    }
-
     @Override
     public int getCount() {
         return menuItems.size();

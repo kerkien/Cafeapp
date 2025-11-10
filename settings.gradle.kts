@@ -7,9 +7,8 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
-        mavenCentral()
         gradlePluginPortal()
-        // optional, for some third-party libs like ZXing via jitpack
+        mavenCentral()
         maven("https://jitpack.io")
     }
 }
@@ -19,7 +18,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // optional, for some ZXing artifacts
         maven("https://jitpack.io")
     }
 }
