@@ -32,28 +32,34 @@ public class MenuForTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_for_table);
 
+        // Initialize views
         listViewMenu = findViewById(R.id.listViewMenu);
         btnScanAgain = findViewById(R.id.btnScanAgain);
-        txtTableNumber = findViewById(R.id.txtTableNumber); // new line
+        txtTableNumber = findViewById(R.id.txtTableNumber);
+
+        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
         menuItems = new ArrayList<>();
-        adapter = new MenuItemAdapter(this, menuItems);
+
+        // ✅ Use 'true' for preview mode (hide edit/delete icons)
+        adapter = new MenuItemAdapter(this, menuItems, true);
         listViewMenu.setAdapter(adapter);
 
-        // Get tableId from Intent
+        // ✅ Get tableId from Intent
         tableId = getIntent().getStringExtra("tableId");
-        if (tableId == null) tableId = "Table_1"; // default
+        if (tableId == null) tableId = "Table_1"; // Default value
 
-        // ✅ Display table number
-        txtTableNumber.setText("Table: " + tableId.replace("Table_", "")); // new line
+        // ✅ Display table number properly
+        txtTableNumber.setText("Table: " + tableId.replace("Table_", ""));
 
+        // ✅ Load menu items from Firestore
         loadMenuItems();
 
-        // ✅ Scan again button
+        // ✅ Button to rescan QR code
         btnScanAgain.setOnClickListener(v -> {
             Intent intent = new Intent(MenuForTableActivity.this, Landingactivity.class);
             startActivity(intent);
-            finish(); // close current menu activity
+            finish(); // Close current activity
         });
     }
 
@@ -78,6 +84,8 @@ public class MenuForTableActivity extends AppCompatActivity {
                 ));
             }
             adapter.notifyDataSetChanged();
-        }).addOnFailureListener(e -> Toast.makeText(this, "Failed to load menu", Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(e ->
+                Toast.makeText(this, "Failed to load menu", Toast.LENGTH_SHORT).show()
+        );
     }
 }

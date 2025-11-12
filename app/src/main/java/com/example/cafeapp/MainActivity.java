@@ -2,9 +2,13 @@ package com.example.cafeapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,9 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-
-// ✅ Import your custom MenuItem class
-import com.example.cafeapp.MenuItem;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,20 +37,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private LinearLayout categoryContainer;
+    private String selectedCategory = "All";
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize toolbar and drawer
+        // ✅ Toolbar + Drawer setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout); // match your XML id
-        navigationView = findViewById(R.id.nav_view); // match your XML id
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open,
@@ -56,27 +60,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Existing logic
+        // ✅ UI components
         listViewMenu = findViewById(R.id.listViewMenu);
         btnAddItem = findViewById(R.id.btnAddItem);
+        categoryContainer = findViewById(R.id.categoryContainer);
 
         db = FirebaseFirestore.getInstance();
         menuItems = new ArrayList<>();
-        adapter = new MenuItemAdapter(this, menuItems);
+
+        // ✅ Show edit/delete since admin
+        adapter = new MenuItemAdapter(this, menuItems, false);
         listViewMenu.setAdapter(adapter);
 
         btnAddItem.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, addmenuitem.class))
         );
 
-        loadMenuItems();
+        // ✅ Load categories + menu
+        loadMenuItemsAndCategories();
     }
 
-    private void loadMenuItems() {
+    private void loadMenuItemsAndCategories() {
         db.collection("menuItems").addSnapshotListener((value, error) -> {
             if (error != null || value == null) return;
 
             menuItems.clear();
+            Set<String> categories = new HashSet<>();
+            categories.add("All"); // default
+
             for (DocumentSnapshot doc : value.getDocuments()) {
                 String id = doc.getId();
                 String name = doc.getString("name");
@@ -84,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String description = doc.getString("description");
                 Double price = doc.getDouble("price");
                 String imageBase64 = doc.getString("imageBase64");
+
+                if (category != null && !category.isEmpty())
+                    categories.add(category);
 
                 menuItems.add(new MenuItem(
                         id,
@@ -94,8 +108,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         imageBase64 != null ? imageBase64 : ""
                 ));
             }
-            adapter.notifyDataSetChanged();
+
+            setupCategoryButtons(new ArrayList<>(categories));
+            filterMenuByCategory(selectedCategory);
         });
+    }
+
+    private void setupCategoryButtons(ArrayList<String> categories) {
+        categoryContainer.removeAllViews();
+
+        for (String cat : categories) {
+            TextView textView = new TextView(this);
+            textView.setText(cat);
+            textView.setTextSize(16);
+            textView.setPadding(32, 16, 32, 16);
+            textView.setTypeface(null, cat.equals(selectedCategory) ? Typeface.BOLD : Typeface.NORMAL);
+            textView.setBackgroundResource(cat.equals(selectedCategory)
+                    ? R.drawable.category_chip_selected
+                    : R.drawable.category_chip_background);
+
+            textView.setOnClickListener(v -> {
+                selectedCategory = cat;
+                setupCategoryButtons(categories);
+                filterMenuByCategory(cat);
+            });
+
+            categoryContainer.addView(textView);
+        }
+    }
+
+    private void filterMenuByCategory(String category) {
+        ArrayList<MenuItem> filtered = new ArrayList<>();
+        for (MenuItem item : menuItems) {
+            if (category.equals("All") || item.getCategory().equalsIgnoreCase(category)) {
+                filtered.add(item);
+            }
+        }
+        adapter = new MenuItemAdapter(this, filtered, false);
+        listViewMenu.setAdapter(adapter);
     }
 
     @Override
@@ -103,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_create_menu) {
-            // Already on this screen
+            // Already here
         } else if (id == R.id.nav_tables) {
             startActivity(new Intent(this, SetupTablesActivity.class));
         } else if (id == R.id.nav_preview) {

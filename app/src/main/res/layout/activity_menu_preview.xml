@@ -21,7 +21,6 @@
             android:titleTextColor="@android:color/white"
             app:title="Preview Menu"/>
 
-        <!-- Your original content -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -34,7 +33,22 @@
                 android:text="Menu Preview"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:paddingBottom="12dp"/>
+                android:paddingBottom="8dp"/>
+
+            <!-- 🔹 Horizontal scrollable categories -->
+            <HorizontalScrollView
+                android:id="@+id/categoryScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/categoryContainer"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </HorizontalScrollView>
 
             <ListView
                 android:id="@+id/listViewPreview"
@@ -44,7 +58,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- NAVIGATION DRAWER -->
+    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

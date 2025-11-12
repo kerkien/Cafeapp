@@ -1,8 +1,12 @@
 package com.example.cafeapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,24 +20,31 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MenuPreviewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ListView listViewPreview; // <- fixed: android.widget.ListView
+    private ListView listViewPreview;
+    private ArrayList<MenuItem> menuItems;
+    private ArrayList<MenuItem> filteredItems;
     private MenuItemAdapter adapter;
-    private ArrayList<com.example.cafeapp.MenuItem> menuItems; // explicitly your model class
     private FirebaseFirestore db;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private LinearLayout categoryContainer;
+    private String selectedCategory = "All";
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_preview);
 
-        // Setup toolbar and drawer
+        // Drawer setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,11 +60,16 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Original logic
+        // UI setup
         listViewPreview = findViewById(R.id.listViewPreview);
+        categoryContainer = findViewById(R.id.categoryContainer);
+
         db = FirebaseFirestore.getInstance();
         menuItems = new ArrayList<>();
-        adapter = new MenuItemAdapter(this, menuItems);
+        filteredItems = new ArrayList<>();
+
+        // true = preview mode (no edit/delete)
+        adapter = new MenuItemAdapter(this, filteredItems, true);
         listViewPreview.setAdapter(adapter);
 
         loadMenuItems();
@@ -64,6 +80,8 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
             if (error != null || value == null) return;
 
             menuItems.clear();
+            Set<String> categories = new HashSet<>();
+
             for (DocumentSnapshot doc : value.getDocuments()) {
                 String id = doc.getId();
                 String name = doc.getString("name");
@@ -72,7 +90,11 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
                 Double price = doc.getDouble("price");
                 String imageBase64 = doc.getString("imageBase64");
 
-                menuItems.add(new com.example.cafeapp.MenuItem(
+                if (category != null && !category.isEmpty()) {
+                    categories.add(category);
+                }
+
+                menuItems.add(new MenuItem(
                         id,
                         name != null ? name : "",
                         description != null ? description : "",
@@ -81,8 +103,59 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
                         imageBase64 != null ? imageBase64 : ""
                 ));
             }
-            adapter.notifyDataSetChanged();
+
+            setupCategoryButtons(categories);
+            filterMenu(selectedCategory);
         });
+    }
+
+    private void setupCategoryButtons(Set<String> categories) {
+        categoryContainer.removeAllViews();
+
+        ArrayList<String> sortedCats = new ArrayList<>();
+        sortedCats.add("All");
+        sortedCats.addAll(categories);
+
+        for (String cat : sortedCats) {
+            TextView chip = new TextView(this);
+            chip.setText(cat);
+            chip.setTextSize(16);
+            chip.setPadding(40, 20, 40, 20);
+            chip.setTypeface(Typeface.DEFAULT_BOLD);
+            chip.setBackgroundResource(
+                    cat.equals(selectedCategory)
+                            ? R.drawable.category_chip_selected
+                            : R.drawable.category_chip_background
+            );
+
+            chip.setTextColor(
+                    cat.equals(selectedCategory)
+                            ? getResources().getColor(android.R.color.white)
+                            : getResources().getColor(android.R.color.black)
+            );
+
+            chip.setOnClickListener(v -> {
+                selectedCategory = cat;
+                filterMenu(cat);
+                setupCategoryButtons(categories);
+            });
+
+            categoryContainer.addView(chip);
+        }
+    }
+
+    private void filterMenu(String category) {
+        filteredItems.clear();
+        if (category.equals("All")) {
+            filteredItems.addAll(menuItems);
+        } else {
+            for (MenuItem item : menuItems) {
+                if (item.getCategory().equalsIgnoreCase(category)) {
+                    filteredItems.add(item);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -90,11 +163,9 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
         int id = item.getItemId();
 
         if (id == R.id.nav_create_menu) {
-            startActivity(new Intent(this, MainActivity.class));
+            finish();
         } else if (id == R.id.nav_tables) {
             startActivity(new Intent(this, SetupTablesActivity.class));
-        } else if (id == R.id.nav_preview) {
-            // Already here
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
