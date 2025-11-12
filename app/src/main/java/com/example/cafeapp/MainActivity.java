@@ -3,6 +3,7 @@ package com.example.cafeapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -14,6 +15,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 // ✅ Import your custom MenuItem class
 import com.example.cafeapp.MenuItem;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,14 +41,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ✅ Initialize Firebase FIRST
+        FirebaseApp.initializeApp(this);
+        // Disable offline persistence to avoid cache issues
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build();
+        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
+
         setContentView(R.layout.activity_main);
 
-        // Initialize toolbar and drawer
+        // ✅ Toolbar and Drawer setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawer_layout); // match your XML id
-        navigationView = findViewById(R.id.nav_view); // match your XML id
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,25 +68,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Existing logic
+        // ✅ Initialize UI elements
         listViewMenu = findViewById(R.id.listViewMenu);
         btnAddItem = findViewById(R.id.btnAddItem);
 
+        // ✅ Initialize Firestore and adapter
         db = FirebaseFirestore.getInstance();
         menuItems = new ArrayList<>();
         adapter = new MenuItemAdapter(this, menuItems);
         listViewMenu.setAdapter(adapter);
 
+        // ✅ Add new menu item
         btnAddItem.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, addmenuitem.class))
         );
 
+        // ✅ Load menu items from Firestore
         loadMenuItems();
     }
 
+    /**
+     * Load all menu items from Firestore.
+     */
     private void loadMenuItems() {
         db.collection("menuItems").addSnapshotListener((value, error) -> {
-            if (error != null || value == null) return;
+            if (error != null) {
+                Log.e("Firestore", "Error fetching menu items", error);
+                return;
+            }
+
+            if (value == null) {
+                Log.e("Firestore", "No data returned");
+                return;
+            }
 
             menuItems.clear();
             for (DocumentSnapshot doc : value.getDocuments()) {
@@ -85,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Double price = doc.getDouble("price");
                 String imageBase64 = doc.getString("imageBase64");
 
+                Log.d("Firestore", "Loaded item: " + name + " (" + category + ")");
+
                 menuItems.add(new MenuItem(
                         id,
                         name != null ? name : "",
@@ -94,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         imageBase64 != null ? imageBase64 : ""
                 ));
             }
+
             adapter.notifyDataSetChanged();
         });
     }

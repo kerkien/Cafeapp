@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,7 @@
 
         <!-- Landing page is now the launcher -->
         <activity
-            android:name=".Landingactivity"
+            android:name=".MainActivity"
             android:exported="true">  <!-- ✅ Changed to true -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,13 +25,13 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".Loginactivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Loginactivity"-->
+<!--            android:exported="false" />-->
 
         <!-- ✅ Removed intent-filter from MainActivity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Landingactivity"
             android:exported="false" />
 
         <activity

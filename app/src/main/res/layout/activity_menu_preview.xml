@@ -21,6 +21,35 @@
             android:titleTextColor="@android:color/white"
             app:title="Preview Menu"/>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Menu Preview"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:paddingBottom="12dp"/>
+
+            <!-- ✅ New Spinner for Category Filter -->
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_marginBottom="12dp"/>
+
+            <ListView
+                android:id="@+id/listViewPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="10dp"/>
+        </LinearLayout>
+
         <!-- Your original content -->
         <LinearLayout
             android:orientation="vertical"
