@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // ✅ FIXED: Firebase with explicit versions (NO BoM, NO version catalog)
+    // Firebase
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.google.firebase:firebase-analytics-ktx:21.5.0")
@@ -48,6 +48,9 @@ dependencies {
     // ZXing
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.zxing:core:3.5.2")
+    
+    // Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Testing
     testImplementation(libs.junit)

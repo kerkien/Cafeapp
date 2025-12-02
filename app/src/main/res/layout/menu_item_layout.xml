@@ -48,6 +48,13 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <!-- Checkbox for customer selection -->
+    <CheckBox
+        android:id="@+id/checkbox_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <!-- Edit icon -->
     <ImageButton
         android:id="@+id/btnEdit"

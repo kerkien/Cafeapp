@@ -6,7 +6,7 @@ public class MenuItem {
     private String description;
     private double price;
     private String category;
-    private String imageBase64;
+    private String imageBase64; // Reverted back to imageBase64
 
     public MenuItem() { }
 
@@ -16,7 +16,7 @@ public class MenuItem {
         this.description = description;
         this.price = price;
         this.category = category;
-        this.imageBase64 = imageBase64;
+        this.imageBase64 = imageBase64; // Reverted
     }
 
     public String getId() { return id; }

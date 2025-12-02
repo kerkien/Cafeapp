@@ -17,6 +17,27 @@
             android:id="@+id/nav_preview"
             android:icon="@drawable/twotone_edit_24"
             android:title="Preview Menu" />
+
+        <item
+            android:id="@+id/nav_barista"
+            android:icon="@drawable/ic_menu"
+            android:title="Barista View" />
+
+        <item
+            android:id="@+id/nav_manage_staff"
+            android:title="Manage Staff" />
+
     </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_admin_profile"
+                android:title="My Profile" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
+        </menu>
+    </item>
 
 </menu>

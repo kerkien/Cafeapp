@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 
 
     <application
@@ -15,37 +17,34 @@
         android:theme="@style/Theme.CafeApp"
         tools:targetApi="31">
 
-        <!-- Landing page is now the launcher -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">  <!-- ✅ Changed to true -->
+            android:name=".Landingactivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-<!--        <activity-->
-<!--            android:name=".Loginactivity"-->
-<!--            android:exported="false" />-->
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".Loginactivity" android:exported="false" />
+        <activity android:name=".MenuForTableActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="yourapp.com" android:pathPrefix="/menu" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MenuPreviewActivity" android:exported="false" />
+        <activity android:name=".SetupTablesActivity" android:exported="false" />
+        <activity android:name=".addmenuitem" android:exported="false" />
+        <activity android:name=".BaristaActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".ManageStaffActivity" android:exported="false" />
+        <activity android:name=".OrderTrackingActivity" android:exported="false" />
+        <activity android:name=".OrderConfirmationActivity" android:exported="false" />
 
-        <!-- ✅ Removed intent-filter from MainActivity -->
-        <activity
-            android:name=".Landingactivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".MenuForTableActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MenuPreviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SetupTablesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".addmenuitem"
-            android:exported="false" />
     </application>
 
 </manifest>
