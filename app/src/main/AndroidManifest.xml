@@ -44,6 +44,7 @@
         <activity android:name=".ManageStaffActivity" android:exported="false" />
         <activity android:name=".OrderTrackingActivity" android:exported="false" />
         <activity android:name=".OrderConfirmationActivity" android:exported="false" />
+        <activity android:name=".DashboardActivity" android:exported="false" />
 
     </application>
 

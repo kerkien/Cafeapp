@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
+import java.util.List; // <-- THE FIX IS HERE
 
 public class BaristaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,6 +28,7 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +50,16 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
         listViewOrders = findViewById(R.id.listViewOrders);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         orderList = new ArrayList<>();
         adapter = new OrderAdapter(this, orderList);
         listViewOrders.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
+
+        // Setup refresh listener
+        swipeRefreshLayout.setOnRefreshListener(this::refreshOrders);
+
         listenForOrders();
     }
 
@@ -65,17 +73,37 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
                         return;
                     }
                     if (snapshots != null) {
-                        orderList.clear();
-                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
-                            Order order = doc.toObject(Order.class);
-                            if (order != null) {
-                                order.setId(doc.getId()); // Set the document ID on the order object
-                                orderList.add(order);
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
+                        updateOrderList(snapshots.getDocuments());
                     }
                 });
+    }
+
+    private void refreshOrders() {
+        db.collection("orders")
+                .whereNotEqualTo("status", "Finished")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    updateOrderList(queryDocumentSnapshots.getDocuments());
+                    swipeRefreshLayout.setRefreshing(false); // Stop the refreshing indicator
+                    Toast.makeText(BaristaActivity.this, "Orders refreshed", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(BaristaActivity.this, "Failed to refresh orders.", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                });
+    }
+
+    private void updateOrderList(List<DocumentSnapshot> documents) {
+        orderList.clear();
+        for (DocumentSnapshot doc : documents) {
+            Order order = doc.toObject(Order.class);
+            if (order != null) {
+                order.setId(doc.getId());
+                orderList.add(order);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

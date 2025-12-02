@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Loginactivity extends AppCompatActivity {
@@ -39,6 +40,28 @@ public class Loginactivity extends AppCompatActivity {
             loginUser(email, password);
         });
     }
+    // In your LoginActivity, after a successful login
+    private void checkUserRoleAndRedirect(FirebaseUser user) {
+        DocumentReference userDoc = FirebaseFirestore.getInstance().collection("users").document(user.getUid());
+        userDoc.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String role = documentSnapshot.getString("role");
+                if ("Admin".equals(role)) {
+                    startActivity(new Intent(this, MainActivity.class));
+                } else if ("Barista".equals(role)) {
+                    startActivity(new Intent(this, BaristaActivity.class));
+                } else {
+                    // Redirect to a default customer view or menu preview
+                    startActivity(new Intent(this, MenuPreviewActivity.class));
+                }
+                finish();
+            } else {
+                // Handle case where user document doesn't exist
+                Toast.makeText(this, "User role not found.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)

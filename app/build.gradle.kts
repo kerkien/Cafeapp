@@ -52,6 +52,10 @@ dependencies {
     // Glide for image loading
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    // Charting Library
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.swiperefreshlayout)
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

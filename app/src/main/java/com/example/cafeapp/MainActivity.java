@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnAddItem = findViewById(R.id.btnAddItem);
         db = FirebaseFirestore.getInstance();
         menuItems = new ArrayList<>();
-        adapter = new MenuItemAdapter(this, menuItems, false);
+        adapter = new MenuItemAdapter(this, menuItems, false); // Admin view
         listViewMenu.setAdapter(adapter);
 
         btnAddItem.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, addmenuitem.class)));
@@ -69,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             menuItems.clear();
             for (DocumentSnapshot doc : value.getDocuments()) {
                 menuItems.add(new MenuItem(
-                        doc.getId(),
-                        doc.getString("name"),
-                        doc.getString("description"),
-                        doc.getDouble("price"),
-                        doc.getString("category"),
-                        doc.getString("imageBase64")
+                    doc.getId(),
+                    doc.getString("name"),
+                    doc.getString("description"),
+                    doc.getDouble("price"),
+                    doc.getString("category"),
+                    doc.getString("imageBase64")
                 ));
             }
             adapter.notifyDataSetChanged();
@@ -95,7 +95,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(this, BaristaActivity.class));
         } else if (id == R.id.nav_manage_staff) {
             startActivity(new Intent(this, ManageStaffActivity.class));
-        } else if (id == R.id.nav_admin_profile) { // <-- ADDED
+        } else if (id == R.id.nav_dashboard) {
+            startActivity(new Intent(this, DashboardActivity.class));
+        } else if (id == R.id.nav_admin_profile) {
             startActivity(new Intent(this, ProfileActivity.class));
         } else if (id == R.id.nav_logout) {
             mAuth.signOut();

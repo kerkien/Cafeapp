@@ -27,6 +27,10 @@
             android:id="@+id/nav_manage_staff"
             android:title="Manage Staff" />
 
+        <item
+            android:id="@+id/nav_dashboard"
+            android:title="Dashboard" />
+
     </group>
 
     <item android:title="Account">

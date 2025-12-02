@@ -69,7 +69,7 @@ public class SetupTablesActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_tables);
 
-        mAuth = FirebaseAuth.getInstance(); // Initialize FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,10 +96,6 @@ public class SetupTablesActivity extends AppCompatActivity implements Navigation
 
         btnGenerate.setOnClickListener(v -> generateTableQRCodes());
     }
-
-    // ... (All other methods like loadExistingTables, displayTableCard, etc. remain the same)
-
-    // The rest of your SetupTablesActivity code is correct. I will paste it here for completeness.
 
     private void loadExistingTables() {
         db.collection("tables")
@@ -242,9 +238,13 @@ public class SetupTablesActivity extends AppCompatActivity implements Navigation
         } else if (id == R.id.nav_barista) {
             startActivity(new Intent(this, BaristaActivity.class));
         } else if (id == R.id.nav_manage_staff) {
-            startActivity(new Intent(this, ManageStaffActivity.class)); // <-- FIXED
+            startActivity(new Intent(this, ManageStaffActivity.class));
+        } else if (id == R.id.nav_dashboard) {
+            startActivity(new Intent(this, DashboardActivity.class));
+        } else if (id == R.id.nav_admin_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
         } else if (id == R.id.nav_logout) {
-            mAuth.signOut(); // <-- FIXED
+            mAuth.signOut();
             Intent intent = new Intent(this, Loginactivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

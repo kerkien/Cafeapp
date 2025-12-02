@@ -49,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
                         txtProfileRole.setText("Error");
                     });
         } else {
+            // This case should ideally not be reached if the user is logged in
             txtProfileEmail.setText("Not logged in");
             txtProfileRole.setText("Unknown");
         }
