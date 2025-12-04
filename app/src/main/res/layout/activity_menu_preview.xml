@@ -6,72 +6,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <!-- MAIN CONTENT -->
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:titleTextColor="@android:color/white"
-            app:title="Preview Menu"/>
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
-            <TextView
+            <!-- Toolbar -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Menu Preview"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:paddingBottom="12dp"/>
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:titleTextColor="@android:color/white"
+                app:title="Preview Menu"/>
 
-            <!-- ✅ New Spinner for Category Filter -->
-            <Spinner
-                android:id="@+id/spinnerCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:layout_marginBottom="12dp"/>
-
-            <ListView
-                android:id="@+id/listViewPreview"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:dividerHeight="10dp"/>
+                android:background="#F5F5F5">
+
+
+                    <Button
+                        android:id="@+id/fabAddItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add Menu Item"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textStyle="bold"
+                        android:padding="12dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"/>
+
+
+
+
+                <!-- Search bar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/searchBar"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="50dp"
+                        android:hint="Search coffee"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:background="@drawable/search_background"
+                        android:drawableStart="@android:drawable/ic_menu_search"
+                        android:drawablePadding="8dp"/>
+                </LinearLayout>
+
+                <!-- Category tabs -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:padding="10dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:id="@+id/categoryTabsContainer"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <!-- Category buttons will be added dynamically -->
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- GridView for menu items -->
+                <!-- GridView for menu items -->
+                <GridView
+                    android:id="@+id/gridViewPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:numColumns="2"
+                    android:gravity="center_horizontal"
+                    android:horizontalSpacing="16dp"
+                    android:verticalSpacing="16dp"
+                    android:padding="16dp"
+                    android:stretchMode="columnWidth"/>
+
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Your original content -->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+        <!-- Floating Action Button -->
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fabAddItem"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|end"-->
+<!--            android:layout_margin="16dp"-->
+<!--            android:src="@android:drawable/ic_input_add"-->
+<!--            android:contentDescription="Add Menu Item"-->
+<!--            app:tint="@android:color/white"/>-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Menu Preview"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:paddingBottom="12dp"/>
-
-            <ListView
-                android:id="@+id/listViewPreview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:dividerHeight="10dp"/>
-        </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <!-- NAVIGATION DRAWER -->
     <com.google.android.material.navigation.NavigationView

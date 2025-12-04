@@ -4,6 +4,7 @@
     android:layout_height="64dp"
     android:orientation="vertical"
     android:gravity="center_vertical"
+    android:fitsSystemWindows="true"
     android:padding="16dp"
     android:background="?attr/colorPrimary">
 
