@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MenuPreviewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MenuForAdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private GridView gridViewPreview;
     private MenuItemAdapter adapter;
@@ -73,7 +72,7 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_preview);
+        setContentView(R.layout.activity_menu_for_admin);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -244,7 +243,21 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
         });
 
         builder.setNegativeButton("Cancel", null);
-        builder.show();
+
+        // Create and show dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Style the dialog buttons
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        if (positiveButton != null) {
+            positiveButton.setTextColor(Color.parseColor("#C67C4E"));
+        }
+        if (negativeButton != null) {
+            negativeButton.setTextColor(Color.parseColor("#808080"));
+        }
     }
 
     private void addMenuItem(String name, String description, double price, String category) {
@@ -386,7 +399,6 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
             categoryButton.setText(displayName);
             categoryButton.setTransformationMethod(null);
 
-            // Set button layout params
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -394,7 +406,6 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
             params.setMargins(0, 0, dpToPx(8), 0);
             categoryButton.setLayoutParams(params);
 
-            // Set padding
             int padding = dpToPx(20);
             int paddingVertical = dpToPx(10);
             categoryButton.setPadding(padding, paddingVertical, padding, paddingVertical);
@@ -403,7 +414,6 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
             categoryButton.setStateListAnimator(null);
             categoryButton.setElevation(0);
 
-            // Set initial style (unselected)
             categoryButton.setBackgroundResource(R.drawable.category_unselected_bg);
             categoryButton.setTextColor(Color.parseColor("#808080"));
 
@@ -427,14 +437,14 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
         for (Button btn : categoryButtons) {
             btn.setBackgroundResource(R.drawable.category_unselected_bg);
             btn.setTextColor(Color.parseColor("#808080"));
-            btn.setStateListAnimator(null);  // Remove shadow
-            btn.setElevation(0);              // Remove elevation
+            btn.setStateListAnimator(null);
+            btn.setElevation(0);
         }
 
         selectedButton.setBackgroundResource(R.drawable.category_selected_bg);
         selectedButton.setTextColor(Color.WHITE);
-        selectedButton.setStateListAnimator(null);  // Remove shadow
-        selectedButton.setElevation(0);              // Remove elevation
+        selectedButton.setStateListAnimator(null);
+        selectedButton.setElevation(0);
     }
 
     private int dpToPx(int dp) {
@@ -483,12 +493,10 @@ public class MenuPreviewActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_create_menu) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.nav_tables) {
+         if (id == R.id.nav_tables) {
             startActivity(new Intent(this, SetupTablesActivity.class));
         } else if (id == R.id.nav_preview) {
-            // Already here
+             startActivity(new Intent(this, MenuForAdminActivity.class));
         } else if (id == R.id.nav_barista) {
             startActivity(new Intent(this, BaristaActivity.class));
         } else if (id == R.id.nav_manage_staff) {

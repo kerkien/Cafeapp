@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,7 @@ public class Landingactivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private DecoratedBarcodeView scannerView;
-    private Button btnClient, btnAdmin;
+    private Button btnAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,9 @@ public class Landingactivity extends AppCompatActivity {
         setContentView(R.layout.activity_landingactivity);
 
         scannerView = findViewById(R.id.scannerView);
-        btnClient = findViewById(R.id.btnClient);
-        btnAdmin = findViewById(R.id.btnAdmin);
+//        btnClient = findViewById(R.id.btnClient);
+//        btnAdmin = findViewById(R.id.btnAdmin);
+        ImageButton btnAdmin = findViewById(R.id.btnAdmin);
 
         // Request camera permission if not granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -58,9 +60,9 @@ public class Landingactivity extends AppCompatActivity {
             startScanning();
         }
 
-        btnClient.setOnClickListener(v ->
-                Toast.makeText(this, "Scan QR code on table to view menu", Toast.LENGTH_SHORT).show()
-        );
+//        btnClient.setOnClickListener(v ->
+//                Toast.makeText(this, "Scan QR code on table to view menu", Toast.LENGTH_SHORT).show()
+//        );
 
         btnAdmin.setOnClickListener(v ->
                 startActivity(new Intent(this, Loginactivity.class))
@@ -78,7 +80,7 @@ public class Landingactivity extends AppCompatActivity {
                     String scannedText = result.getText();
 
                     // Handle QR result and navigate
-                    Intent intent = new Intent(Landingactivity.this, MenuForTableActivity.class);
+                    Intent intent = new Intent(Landingactivity.this, MenuForClientActivity.class);
                     intent.setData(Uri.parse(scannedText)); // Pass the full URL
                     startActivity(intent);
 

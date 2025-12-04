@@ -47,12 +47,12 @@ public class Loginactivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 String role = documentSnapshot.getString("role");
                 if ("Admin".equals(role)) {
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, MenuForAdminActivity.class));
                 } else if ("Barista".equals(role)) {
                     startActivity(new Intent(this, BaristaActivity.class));
                 } else {
                     // Redirect to a default customer view or menu preview
-                    startActivity(new Intent(this, MenuPreviewActivity.class));
+                    startActivity(new Intent(this, MenuForClientActivity.class));
                 }
                 finish();
             } else {
@@ -92,7 +92,7 @@ public class Loginactivity extends AppCompatActivity {
 
                         if ("Admin".equals(role)) {
                             // User is an Admin, go to MainActivity
-                            Intent intent = new Intent(Loginactivity.this, MainActivity.class);
+                            Intent intent = new Intent(Loginactivity.this, MenuForAdminActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             finish();

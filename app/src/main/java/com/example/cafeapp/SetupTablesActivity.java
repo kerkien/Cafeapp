@@ -1,19 +1,8 @@
 package com.example.cafeapp;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,25 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,12 +213,14 @@ public class SetupTablesActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_create_menu) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.nav_tables) {
-            // Already here
+//        if (id == R.id.nav_create_menu) {
+//            startActivity(new Intent(this, MenuForAdminActivity.class));
+//        } else
+
+        if (id == R.id.nav_tables) {
+            startActivity(new Intent(this, SetupTablesActivity.class));
         } else if (id == R.id.nav_preview) {
-            startActivity(new Intent(this, MenuPreviewActivity.class));
+            startActivity(new Intent(this, MenuForAdminActivity.class));
         } else if (id == R.id.nav_barista) {
             startActivity(new Intent(this, BaristaActivity.class));
         } else if (id == R.id.nav_manage_staff) {

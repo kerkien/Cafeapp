@@ -86,39 +86,39 @@
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Bottom Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="32dp"
-        android:gravity="center">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:gravity="center">-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnClient"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Client"
-            android:textColor="@android:color/white"
-            app:strokeColor="@android:color/white"
-            app:cornerRadius="12dp"/>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnClient"-->
+<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Client"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            app:strokeColor="@android:color/white"-->
+<!--            app:cornerRadius="12dp"/>-->
 
-        <Space
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"/>
+<!--        <Space-->
+<!--            android:layout_width="16dp"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAdmin"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Admin"
-            android:textColor="@android:color/white"
-            app:strokeColor="@android:color/white"
-            app:cornerRadius="12dp"/>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnAdmin"-->
+<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Admin"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            app:strokeColor="@android:color/white"-->
+<!--            app:cornerRadius="12dp"/>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </LinearLayout>

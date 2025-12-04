@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MenuForTableActivity extends AppCompatActivity {
+public class MenuForClientActivity extends AppCompatActivity {
 
     private GridView gridViewMenu;
     private ArrayList<MenuItem> menuItems;
@@ -42,7 +42,7 @@ public class MenuForTableActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_for_table);
+        setContentView(R.layout.activity_menu_for_client);
 
         gridViewMenu = findViewById(R.id.gridViewMenu);
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
@@ -165,7 +165,7 @@ public class MenuForTableActivity extends AppCompatActivity {
             Button categoryButton = new Button(this);
 
             // Set button text
-            String displayName = category.equals("All") ? "All Coffee" : category;
+            String displayName = category.equals("All") ? "All" : category;
             categoryButton.setText(displayName);
             categoryButton.setTransformationMethod(null); // Prevents all caps
 
@@ -276,7 +276,7 @@ public class MenuForTableActivity extends AppCompatActivity {
         Order order = new Order(tableId, orderItems);
         db.collection("orders").add(order)
                 .addOnSuccessListener(documentReference -> {
-                    Intent intent = new Intent(MenuForTableActivity.this, OrderTrackingActivity.class);
+                    Intent intent = new Intent(MenuForClientActivity.this, OrderTrackingActivity.class);
                     intent.putExtra("orderId", documentReference.getId());
                     startActivity(intent);
                     finish();

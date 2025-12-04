@@ -99,11 +99,11 @@ public class MenuItemAdapter extends BaseAdapter {
             btnEdit.setVisibility(View.VISIBLE);
             btnDelete.setVisibility(View.VISIBLE);
 
-            btnEdit.setOnClickListener(v -> {
-                Intent intent = new Intent(context, addmenuitem.class);
-                intent.putExtra("editItemId", item.getId());
-                context.startActivity(intent);
-            });
+//            btnEdit.setOnClickListener(v -> {
+//                Intent intent = new Intent(context, addmenuitem.class);
+//                intent.putExtra("editItemId", item.getId());
+//                context.startActivity(intent);
+//            });
 
             btnDelete.setOnClickListener(v -> {
                 new AlertDialog.Builder(context)

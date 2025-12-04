@@ -38,7 +38,7 @@
         <!-- === INTERNAL ACTIVITIES (NOT EXPORTED) === -->
         <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".Loginactivity" android:exported="false" />
-        <activity android:name=".MenuPreviewActivity" android:exported="false" />
+        <activity android:name=".MenuForAdminActivity" android:exported="false" />
         <activity android:name=".SetupTablesActivity" android:exported="false" />
         <activity android:name=".addmenuitem" android:exported="false" />
         <activity android:name=".BaristaActivity" android:exported="false" />
@@ -51,7 +51,7 @@
         <!-- ==== SECURED DEEP LINK ACTIVITY ==== -->
         <!-- Keep exported=true ONLY for this activity -->
         <activity
-            android:name=".MenuForTableActivity"
+            android:name=".MenuForClientActivity"
             android:exported="true"
             android:autoVerify="true">
 
