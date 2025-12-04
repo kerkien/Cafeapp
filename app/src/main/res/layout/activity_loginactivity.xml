@@ -15,7 +15,7 @@
         android:text="CafeApp"
         android:textSize="48sp"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
+
         android:layout_marginBottom="32dp"/>
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Admin Login"
         android:textSize="18sp"
-        android:textColor="@android:color/white"
+
         android:layout_marginBottom="48dp"/>
 
     <!-- Login Form Card -->
@@ -38,8 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:background="@android:color/white">
+            android:padding="24dp">
 
             <!-- Email Field -->
             <com.google.android.material.textfield.TextInputLayout
@@ -81,8 +80,7 @@
                 android:layout_marginTop="24dp"
                 android:text="Login"
                 android:textSize="16sp"
-                app:cornerRadius="12dp"
-                app:backgroundTint="@color/black"/>
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

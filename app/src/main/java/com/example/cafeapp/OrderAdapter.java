@@ -1,4 +1,3 @@
-// E:/CafeApp/CafeApp/app/src/main/java/com/example/cafeapp/OrderAdapter.java
 package com.example.cafeapp;
 
 import android.content.Context;
@@ -13,10 +12,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class OrderAdapter extends ArrayAdapter<Order> {
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public OrderAdapter(Context context, List<Order> orders) {
         super(context, 0, orders);
@@ -40,55 +40,46 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         if (order != null) {
             txtOrderTable.setText("Table: " + order.getTableId().replace("Table_", ""));
 
-            // Set Status and Color
             String status = order.getStatus();
             txtOrderStatus.setText(status);
-            if (status != null) {
-                switch (status) {
-                    case "Preparing":
-                        txtOrderStatus.setTextColor(Color.BLUE);
-                        btnStartPreparing.setVisibility(View.GONE);
-                        btnFinishOrder.setVisibility(View.VISIBLE);
-                        break;
-                    case "Finished":
-                        txtOrderStatus.setTextColor(Color.GREEN);
-                        btnStartPreparing.setVisibility(View.GONE);
-                        btnFinishOrder.setVisibility(View.GONE);
-                        break;
-                    case "Pending":
-                    default:
-                        txtOrderStatus.setTextColor(Color.parseColor("#FFA500")); // Orange
-                        btnStartPreparing.setVisibility(View.VISIBLE);
-                        btnFinishOrder.setVisibility(View.GONE);
-                        break;
-                }
+            switch (status) {
+                case "Preparing":
+                    txtOrderStatus.setTextColor(Color.BLUE);
+                    btnStartPreparing.setVisibility(View.GONE);
+                    btnFinishOrder.setVisibility(View.VISIBLE);
+                    break;
+                case "Finished":
+                    txtOrderStatus.setTextColor(Color.GREEN);
+                    btnStartPreparing.setVisibility(View.GONE);
+                    btnFinishOrder.setVisibility(View.GONE);
+                    break;
+                case "Pending":
+                default:
+                    txtOrderStatus.setTextColor(Color.parseColor("#FFA500")); // Orange
+                    btnStartPreparing.setVisibility(View.VISIBLE);
+                    btnFinishOrder.setVisibility(View.GONE);
+                    break;
             }
 
-            // Set Items List
             StringBuilder itemsStr = new StringBuilder();
-            // *** THIS IS THE FIX: Use the helper method to get a correctly typed list ***
-            for (MenuItem item : order.getItemsAsMenuItems()) {
-                if (item.getName() != null) {
-                    itemsStr.append("- ").append(item.getName()).append("\n");
+            if (order.getItems() != null) {
+                for (Map<String, Object> itemMap : order.getItems()) {
+                    String name = (String) itemMap.get("name");
+                    if (name != null) {
+                        itemsStr.append("- ").append(name).append("\n");
+                    }
                 }
             }
             txtOrderItems.setText(itemsStr.toString().trim());
 
-            // Set Timestamp
             if (order.getTimestamp() != null) {
                 txtOrderTimestamp.setText(new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(order.getTimestamp()));
             } else {
                 txtOrderTimestamp.setText("");
             }
 
-            // Set Button Listeners
-            btnStartPreparing.setOnClickListener(v -> {
-                updateOrderStatus(order, "Preparing");
-            });
-
-            btnFinishOrder.setOnClickListener(v -> {
-                updateOrderStatus(order, "Finished");
-            });
+            btnStartPreparing.setOnClickListener(v -> updateOrderStatus(order, "Preparing"));
+            btnFinishOrder.setOnClickListener(v -> updateOrderStatus(order, "Finished"));
         }
 
         return convertView;

@@ -35,7 +35,6 @@
             android:id="@+id/txtCategory"
             android:text="Category"
             android:textSize="14sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -43,7 +42,6 @@
             android:id="@+id/txtPrice"
             android:text="$0.00"
             android:textSize="16sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

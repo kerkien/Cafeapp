@@ -7,12 +7,11 @@
             android:title="My Profile" />
     </group>
 
-    <item android:title="Account">
-        <menu>
+
             <item
                 android:id="@+id/nav_barista_logout"
                 android:title="Logout" />
-        </menu>
-    </item>
+
+
 
 </menu>

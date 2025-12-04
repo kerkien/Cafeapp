@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <!-- Table Number Display -->
     <TextView
@@ -14,7 +14,6 @@
         android:text="Table: 1"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
         android:layout_marginBottom="12dp"/>
 
     <!-- Category Filter Spinner -->
@@ -38,8 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Place Order"
-        android:backgroundTint="@color/black"
-        android:textColor="@android:color/white"
+
         android:layout_marginTop="16dp"/>
 
     <!-- Scan Again Button (Removed for better UX post-order) -->

@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="?attr/backgroundColor">
 
     <!-- MAIN CONTENT -->
     <LinearLayout
@@ -18,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:titleTextColor="@android:color/white"
-            app:title="Cafe Admin Panel" />
+            app:titleTextColor="?attr/colorOnPrimary" />
 
         <!-- Existing content -->
         <LinearLayout
@@ -33,8 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add Menu Item"
-                android:backgroundTint="@color/black"
-                android:textColor="@android:color/white"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -43,7 +44,8 @@
                 android:id="@+id/listViewMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:dividerHeight="10dp"/>
+                android:dividerHeight="10dp"
+                android:divider="@android:color/transparent" />
         </LinearLayout>
     </LinearLayout>
 
@@ -53,6 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/navheader"
         app:menu="@menu/drawermenu"/>
 </androidx.drawerlayout.widget.DrawerLayout>

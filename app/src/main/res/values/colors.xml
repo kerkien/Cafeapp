@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- ☀️ Light Theme Color Palette -->
+    <color name="text">#000000</color>              <!-- Main text color -->
+    <color name="background">#F9F2EC</color>       <!-- App background -->
+    <color name="primary">#C67C4E</color>          <!-- Brand color (buttons, highlights) -->
+    <color name="secondary">#E3E3E3</color>        <!-- Secondary background or cards -->
+    <color name="accent">#303030</color>           <!-- Accent color for emphasis -->
+    <color name="white">#FFFFFF</color>
 </resources>

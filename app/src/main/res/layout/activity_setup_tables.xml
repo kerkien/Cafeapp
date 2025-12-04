@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,15 +39,13 @@
                     android:layout_height="wrap_content"
                     android:hint="Enter number of tables"
                     android:inputType="number"
-                    android:padding="10dp"
-                    android:backgroundTint="@color/black"/>
+                    android:padding="10dp" />
 
                 <Button
                     android:id="@+id/btnGenerate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Generate QR Codes"
-                    android:backgroundTint="@color/black"
                     android:textColor="@android:color/white"
                     android:layout_marginTop="12dp"/>
 
@@ -66,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/navheader"
         app:menu="@menu/drawermenu"/>
 </androidx.drawerlayout.widget.DrawerLayout>
