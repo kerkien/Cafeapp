@@ -1,7 +1,11 @@
 package com.example.cafeapp;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -15,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends LogicAct {
 
     private BarChart barChart;
     private FirebaseFirestore db;
@@ -24,6 +28,9 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        setupDrawer(); // this sets up toolbar, toggle, nav listener
+
+
 
         barChart = findViewById(R.id.barChart);
         db = FirebaseFirestore.getInstance();

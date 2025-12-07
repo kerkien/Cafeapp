@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends LogicAct {
 
     private TextView txtProfileEmail, txtProfileRole;
     private FirebaseAuth mAuth;
@@ -18,6 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        setupDrawer();
 
         txtProfileEmail = findViewById(R.id.txtProfileEmail);
         txtProfileRole = findViewById(R.id.txtProfileRole);

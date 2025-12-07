@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_margin="8dp"
-    android:background="@android:drawable/dialog_holo_light_frame">
+    android:backgroundTint="@color/accent"
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
