@@ -1,78 +1,81 @@
 package com.example.cafeapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.android.material.navigation.NavigationView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import java.util.ArrayList;
-import java.util.List; // <-- THE FIX IS HERE
 
-public class BaristaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * BaristaActivity - shows incoming (non-finished) orders.
+ * Inherits drawer/toolbar/navigation behaviour from LogicAct.
+ */
+public class BaristaActivity extends LogicAct {
 
     private ListView listViewOrders;
     private ArrayList<Order> orderList;
     private OrderAdapter adapter;
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
-    private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
-    protected NavigationView navigationView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // IMPORTANT: layout must contain views with these IDs:
+        // - DrawerLayout: @+id/drawer_layout
+        // - NavigationView: @+id/nav_view
+        // - Toolbar: @+id/toolbar
+        // If your layout used different IDs (e.g. toolbar_barista or nav_view_barista)
+        // change them to the three IDs above or update LogicAct accordingly.
         setContentView(R.layout.activity_barista);
-        navigationView = findViewById(R.id.nav_view);
-        // Prevent UI from sliding under status bar
-        if (drawerLayout != null)
-            drawerLayout.setFitsSystemWindows(true);
 
-        if (navigationView != null)
-            navigationView.setFitsSystemWindows(true);
+        // Let base class wire toolbar + drawer + nav + fetch role
+        setupDrawer();
+        toolbar = findViewById(R.id.toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
 
-        Toolbar toolbar = findViewById(R.id.toolbar_barista);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawer_layout_barista);
-        NavigationView navigationView = findViewById(R.id.nav_view_barista);
-        navigationView.setNavigationItemSelectedListener(this);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Firebase auth & firestore are initialized in LogicAct.onCreate()
+        // (mAuth and db are protected members in LogicAct)
+
+        // Setup UI references
         listViewOrders = findViewById(R.id.listViewOrders);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
         orderList = new ArrayList<>();
         adapter = new OrderAdapter(this, orderList);
         listViewOrders.setAdapter(adapter);
 
-        db = FirebaseFirestore.getInstance();
-
         // Setup refresh listener
         swipeRefreshLayout.setOnRefreshListener(this::refreshOrders);
 
+        // Start listening for orders
         listenForOrders();
     }
 
     private void listenForOrders() {
+        if (db == null) return;
         db.collection("orders")
                 .whereNotEqualTo("status", "Finished")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -88,6 +91,11 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
     }
 
     private void refreshOrders() {
+        if (db == null) {
+            swipeRefreshLayout.setRefreshing(false);
+            return;
+        }
+
         db.collection("orders")
                 .whereNotEqualTo("status", "Finished")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -116,27 +124,10 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_barista_profile) {
-            startActivity(new Intent(this, ProfileActivity.class));
-        } else if (id == R.id.nav_barista_logout) {
-            mAuth.signOut();
-            Intent intent = new Intent(this, Loginactivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+        // drawerLayout is inherited from LogicAct and initialized by setupDrawer()
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
+            drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START);
         } else {
             super.onBackPressed();
         }

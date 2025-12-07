@@ -1,46 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_admin"
+        android:checkableBehavior="single">
 
-<!--        <item-->
-<!--            android:id="@+id/nav_create_menu"-->
-<!--            android:title="Create Menu" />-->
-<!--&lt;!&ndash;        android:icon="@drawable/ic_menu"&ndash;&gt;-->
-
-
-        <item
-            android:id="@+id/nav_preview"
-            android:title="Preview Menu" />
-        <item
-            android:id="@+id/nav_tables"
-            android:title="Setup Tables (QR Codes)" />
-<!--        android:icon="@drawable/twotone_edit_24"-->
-
-
-
-
-<!--        <item-->
-<!--            android:id="@+id/nav_barista"-->
-<!--            android:title="Barista View" />-->
-
-        <item
-            android:id="@+id/nav_manage_staff"
-            android:title="Manage Staff" />
-
-        <item
-            android:id="@+id/nav_dashboard"
-            android:title="Dashboard" />
-
+        <item android:id="@+id/nav_preview" android:title="Preview Menu"/>
+        <item android:id="@+id/nav_tables" android:title="Setup Tables (QR Codes)"/>
+        <item android:id="@+id/nav_manage_staff" android:title="Manage Staff"/>
+        <item android:id="@+id/nav_dashboard" android:title="Dashboard"/>
     </group>
 
-            <item
-                android:id="@+id/nav_admin_profile"
-                android:title="My Profile" />
-            <item
-                android:id="@+id/nav_logout"
-                android:title="Logout" />
+    <!-- Visible ONLY for barista -->
+    <item
+        android:id="@+id/nav_barista"
+        android:title="Barista Orders"/>
 
-
+    <item android:id="@+id/nav_profile" android:title="My Profile"/>
+    <item android:id="@+id/nav_logout" android:title="Logout"/>
 
 </menu>
