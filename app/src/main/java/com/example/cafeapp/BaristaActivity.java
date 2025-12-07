@@ -29,11 +29,20 @@ public class BaristaActivity extends AppCompatActivity implements NavigationView
     private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    protected NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barista);
+        navigationView = findViewById(R.id.nav_view);
+        // Prevent UI from sliding under status bar
+        if (drawerLayout != null)
+            drawerLayout.setFitsSystemWindows(true);
+
+        if (navigationView != null)
+            navigationView.setFitsSystemWindows(true);
 
         mAuth = FirebaseAuth.getInstance();
 

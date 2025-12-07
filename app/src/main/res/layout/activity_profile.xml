@@ -7,51 +7,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <!-- MAIN CONTENT: Toolbar + Profile content -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="32dp"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Profile"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="32dp"/>
-
-        <TextView
+        <!-- Toolbar added here -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email:"
-            android:textSize="14sp"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            app:title="Profile"/>
 
-        <TextView
-            android:id="@+id/txtProfileEmail"
+        <!-- Existing profile content (kept, moved below toolbar) -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="loading..."
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Role:"
-            android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Profile"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="32dp" />
 
-        <TextView
-            android:id="@+id/txtProfileRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="loading..."
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/txtProfileEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="loading..."
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Role:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtProfileRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="loading..."
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
+
     <!-- NAVIGATION DRAWER -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

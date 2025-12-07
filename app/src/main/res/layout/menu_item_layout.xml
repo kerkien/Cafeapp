@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="8dp"
-    android:background="?attr/colorSecondary"
+    android:background="@drawable/item_background"
     android:padding="12dp">
 
     <!-- Image with rounded corners -->
@@ -57,39 +57,88 @@
         <TextView
             android:id="@+id/txtPrice"
             android:text="$ 0.00"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <!-- Checkbox for customer selection (hidden for admin) -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <!-- Quantity controls for customer (hidden for admin) -->
+        <LinearLayout
+            android:id="@+id/layoutQuantity"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btnDecrease"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Decrease"/>
+
+            <TextView
+                android:id="@+id/txtQuantity"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center" />
+
+            <ImageButton
+                android:id="@+id/btnIncrease"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_input_add"
+                android:contentDescription="Increase"/>
+
+        </LinearLayout>
+
+        <!-- Checkbox for customer selection (REMOVED - replaced with quantity) -->
         <CheckBox
             android:id="@+id/checkbox_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <!-- Edit button for admin -->
+        <!-- Edit button for admin with rounded background -->
         <ImageButton
             android:id="@+id/btnEdit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/colorPrimary"
             android:contentDescription="Edit"
             android:src="@drawable/twotone_edit_24"
+            android:padding="6dp"
+            app:cardCornerRadius="12dp"
+            android:scaleType="fitCenter"
+            android:tint="@android:color/white"
             android:layout_marginEnd="5dp"
             android:visibility="gone"/>
 
-        <!-- Delete button for admin -->
+        <!-- Delete button for admin with rounded background -->
         <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/colorPrimary"
             android:contentDescription="Delete"
             android:src="@drawable/baseline_close_24"
+            android:padding="6dp"
+            app:cardCornerRadius="12dp"
+            android:tint="@android:color/white"
+            android:scaleType="fitCenter"
             android:visibility="gone"/>
     </LinearLayout>
 

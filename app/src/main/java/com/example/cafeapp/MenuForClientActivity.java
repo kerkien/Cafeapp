@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MenuForClientActivity extends AppCompatActivity {
+public class MenuForClientActivity extends LogicAct {
 
     private GridView gridViewMenu;
     private ArrayList<MenuItem> menuItems;
