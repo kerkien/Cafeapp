@@ -117,29 +117,27 @@
             android:id="@+id/btnEdit"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/rounded_button"
             android:contentDescription="Edit"
             android:src="@drawable/twotone_edit_24"
             android:padding="6dp"
-            app:cardCornerRadius="12dp"
             android:scaleType="fitCenter"
             android:tint="@android:color/white"
             android:layout_marginEnd="5dp"
             android:visibility="gone"/>
+
 
         <!-- Delete button for admin with rounded background -->
         <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="?attr/colorPrimary"
-            android:contentDescription="Delete"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/baseline_close_24"
             android:padding="6dp"
-            app:cardCornerRadius="12dp"
             android:tint="@android:color/white"
-            android:scaleType="fitCenter"
-            android:visibility="gone"/>
+            android:scaleType="fitCenter" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -36,11 +36,11 @@
         </activity>
 
         <!-- === INTERNAL ACTIVITIES (NOT EXPORTED) === -->
-        <activity android:name=".MainActivity" android:exported="false" />
+<!--        <activity android:name=".MainActivity" android:exported="false" />-->
         <activity android:name=".Loginactivity" android:exported="false" />
         <activity android:name=".MenuForAdminActivity" android:exported="false" />
         <activity android:name=".SetupTablesActivity" android:exported="false" />
-        <activity android:name=".addmenuitem" android:exported="false" />
+<!--        <activity android:name=".addmenuitem" android:exported="false" />-->
         <activity android:name=".BaristaActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".ManageStaffActivity" android:exported="false" />
