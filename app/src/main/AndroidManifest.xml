@@ -53,6 +53,7 @@
         <activity
             android:name=".MenuForClientActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:autoVerify="true">
 
             <intent-filter>

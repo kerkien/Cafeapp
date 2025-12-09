@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -23,15 +24,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MenuForClientActivity extends LogicAct {
+public class MenuForClientActivity extends AppCompatActivity {
+
+    private static final String TAG = "MenuClient";
 
     private GridView gridViewMenu;
     private ArrayList<MenuItem> menuItems;
-    private ArrayList<MenuItem> allMenuItems; // Store all items for search
+    private ArrayList<MenuItem> allMenuItems;
     private MenuItemAdapter adapter;
     private FirebaseFirestore db;
     private Button btnPlaceOrder;
     private TextView txtTableNumber;
+    private TextView txtCartSummary;
     private EditText searchBar;
     private String tableId;
     private List<String> categories;
@@ -47,6 +51,7 @@ public class MenuForClientActivity extends LogicAct {
         gridViewMenu = findViewById(R.id.gridViewMenu);
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         txtTableNumber = findViewById(R.id.txtTableNumber);
+        txtCartSummary = findViewById(R.id.txtCartSummary);
         searchBar = findViewById(R.id.searchBar);
         categoryTabsContainer = findViewById(R.id.categoryTabsContainer);
 
@@ -69,19 +74,40 @@ public class MenuForClientActivity extends LogicAct {
             txtTableNumber.setText("Table not found");
         }
 
-        // Setup search functionality
         setupSearch();
-
         loadCategoriesFromFirestore();
 
+        gridViewMenu.setOnScrollListener(new android.widget.AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(android.widget.AbsListView view, int scrollState) {}
+
+            @Override
+            public void onScroll(android.widget.AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                updateCartSummary();
+            }
+        });
+
         btnPlaceOrder.setOnClickListener(v -> {
-            List<MenuItem> selectedItems = adapter.getSelectedItems();
-            if (selectedItems.isEmpty()) {
-                Toast.makeText(this, "Please select at least one item.", Toast.LENGTH_SHORT).show();
+            // FIXED - Get CartItem list instead of MenuItem list
+            List<CartItem> cartItems = adapter.getCartItems();
+            if (cartItems.isEmpty()) {
+                Toast.makeText(this, "Please add at least one item to cart.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            placeOrder(selectedItems);
+            placeOrder(cartItems);
         });
+    }
+
+    private void updateCartSummary() {
+        int itemCount = adapter.getCartItemCount();
+        double total = adapter.getCartTotal();
+
+        if (itemCount > 0) {
+            txtCartSummary.setText(String.format("%d items - $%.2f", itemCount, total));
+            txtCartSummary.setVisibility(TextView.VISIBLE);
+        } else {
+            txtCartSummary.setVisibility(TextView.GONE);
+        }
     }
 
     private void setupSearch() {
@@ -95,7 +121,9 @@ public class MenuForClientActivity extends LogicAct {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                updateCartSummary();
+            }
         });
     }
 
@@ -103,25 +131,22 @@ public class MenuForClientActivity extends LogicAct {
         menuItems.clear();
 
         if (searchText.isEmpty()) {
-            // If search is empty, show items based on selected category
             if (selectedCategory.equals("All")) {
                 menuItems.addAll(allMenuItems);
             } else {
                 for (MenuItem item : allMenuItems) {
-                    if (item.getCategory().equals(selectedCategory)) {
+                    if (item.getCategory() != null && item.getCategory().equals(selectedCategory)) {
                         menuItems.add(item);
                     }
                 }
             }
         } else {
-            // Filter by search text and category
             String searchLower = searchText.toLowerCase();
             for (MenuItem item : allMenuItems) {
                 boolean matchesCategory = selectedCategory.equals("All") ||
-                        item.getCategory().equals(selectedCategory);
-                boolean matchesSearch = item.getName().toLowerCase().contains(searchLower) ||
-                        (item.getDescription() != null &&
-                                item.getDescription().toLowerCase().contains(searchLower));
+                        (item.getCategory() != null && item.getCategory().equals(selectedCategory));
+                boolean matchesSearch = (item.getName() != null && item.getName().toLowerCase().contains(searchLower)) ||
+                        (item.getDescription() != null && item.getDescription().toLowerCase().contains(searchLower));
 
                 if (matchesCategory && matchesSearch) {
                     menuItems.add(item);
@@ -147,10 +172,7 @@ public class MenuForClientActivity extends LogicAct {
             categories = new ArrayList<>(categorySet);
             categories.sort((a, b) -> a.equals("All") ? -1 : b.equals("All") ? 1 : a.compareToIgnoreCase(b));
 
-            // Create category buttons dynamically
             createCategoryButtons();
-
-            // Load all items initially
             loadMenuItems("All");
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to load categories", Toast.LENGTH_SHORT).show();
@@ -164,12 +186,10 @@ public class MenuForClientActivity extends LogicAct {
         for (String category : categories) {
             Button categoryButton = new Button(this);
 
-            // Set button text
             String displayName = category.equals("All") ? "All" : category;
             categoryButton.setText(displayName);
-            categoryButton.setTransformationMethod(null); // Prevents all caps
+            categoryButton.setTransformationMethod(null);
 
-            // Set button layout params
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -177,16 +197,15 @@ public class MenuForClientActivity extends LogicAct {
             params.setMargins(0, 0, dpToPx(8), 0);
             categoryButton.setLayoutParams(params);
 
-            // Set padding
             int padding = dpToPx(20);
             int paddingVertical = dpToPx(10);
             categoryButton.setPadding(padding, paddingVertical, padding, paddingVertical);
 
-            // Set initial style (unselected)
+            categoryButton.setStateListAnimator(null);
+            categoryButton.setElevation(0);
             categoryButton.setBackgroundResource(R.drawable.category_unselected_bg);
             categoryButton.setTextColor(Color.parseColor("#808080"));
 
-            // Set click listener
             categoryButton.setOnClickListener(v -> {
                 selectCategory(categoryButton, category);
                 loadMenuItems(category);
@@ -196,7 +215,6 @@ public class MenuForClientActivity extends LogicAct {
             categoryButtons.add(categoryButton);
         }
 
-        // Select first button (All) by default
         if (!categoryButtons.isEmpty()) {
             selectCategory(categoryButtons.get(0), "All");
         }
@@ -205,15 +223,17 @@ public class MenuForClientActivity extends LogicAct {
     private void selectCategory(Button selectedButton, String category) {
         selectedCategory = category;
 
-        // Reset all buttons to unselected state
         for (Button btn : categoryButtons) {
             btn.setBackgroundResource(R.drawable.category_unselected_bg);
             btn.setTextColor(Color.parseColor("#808080"));
+            btn.setStateListAnimator(null);
+            btn.setElevation(0);
         }
 
-        // Set selected button
         selectedButton.setBackgroundResource(R.drawable.category_selected_bg);
         selectedButton.setTextColor(Color.WHITE);
+        selectedButton.setStateListAnimator(null);
+        selectedButton.setElevation(0);
     }
 
     private int dpToPx(int dp) {
@@ -248,7 +268,6 @@ public class MenuForClientActivity extends LogicAct {
 
             adapter.notifyDataSetChanged();
 
-            // Reapply search filter if there's text in search bar
             String searchText = searchBar.getText().toString();
             if (!searchText.isEmpty()) {
                 filterMenuItems(searchText);
@@ -258,30 +277,38 @@ public class MenuForClientActivity extends LogicAct {
         });
     }
 
-    private void placeOrder(List<MenuItem> items) {
+    private void placeOrder(List<CartItem> cartItems) {
         if (tableId == null) {
             Toast.makeText(this, "Invalid table ID.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         List<Map<String, Object>> orderItems = new ArrayList<>();
-        for (MenuItem item : items) {
+        for (CartItem cartItem : cartItems) {
+            MenuItem item = cartItem.getMenuItem();
             Map<String, Object> orderItem = new HashMap<>();
             orderItem.put("id", item.getId());
             orderItem.put("name", item.getName());
             orderItem.put("price", item.getPrice());
+            orderItem.put("quantity", cartItem.getQuantity()); // CRITICAL - Save quantity
             orderItems.add(orderItem);
+
+            Log.d(TAG, "Adding to order: " + item.getName() + " x" + cartItem.getQuantity());
         }
+
+        Log.d(TAG, "Placing order with " + orderItems.size() + " items");
 
         Order order = new Order(tableId, orderItems);
         db.collection("orders").add(order)
                 .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MenuForClientActivity.this, OrderTrackingActivity.class);
                     intent.putExtra("orderId", documentReference.getId());
                     startActivity(intent);
                     finish();
                 })
                 .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to place order", e);
                     Toast.makeText(this, "Failed to place order: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }

@@ -1,4 +1,3 @@
-// E:/CafeApp/CafeApp/app/src/main/java/com/example/cafeapp/Order.java
 package com.example.cafeapp;
 
 import com.google.firebase.firestore.Exclude;
@@ -17,20 +16,16 @@ public class Order {
     private Date timestamp;
     private List<Map<String, Object>> items;
 
-    // A no-argument constructor is required for Firestore deserialization
     public Order() {}
 
-    // Constructor used when creating a new order
     public Order(String tableId, List<Map<String, Object>> items) {
         this.tableId = tableId;
         this.items = items;
-        this.status = "Pending"; // Default status
-        this.timestamp = new Date(); // Set current time
+        this.status = "Pending";
+        this.timestamp = new Date();
     }
 
-    // --- Getters and Setters ---
-
-    @Exclude // Exclude from Firestore mapping, as we manage it manually
+    @Exclude
     public String getId() {
         return id;
     }
@@ -72,35 +67,34 @@ public class Order {
     }
 
     /**
-     * Helper method to convert the raw list of map objects from Firestore
-     * into a list of MenuItem objects.
-     * The @Exclude annotation is important to tell Firestore to ignore this getter.
+     * Helper to get quantity from item map
      */
     @Exclude
-    public List<MenuItem> getItemsAsMenuItems() {
-        if (items == null) {
-            return new ArrayList<>(); // Return an empty list if there are no items
+    public static int getQuantityFromItem(Map<String, Object> itemMap) {
+        Object quantityObj = itemMap.get("quantity");
+        if (quantityObj instanceof Long) {
+            return ((Long) quantityObj).intValue();
+        } else if (quantityObj instanceof Integer) {
+            return (Integer) quantityObj;
+        } else if (quantityObj instanceof Double) {
+            return ((Double) quantityObj).intValue();
         }
+        return 1; // Default
+    }
 
-        List<MenuItem> menuItemList = new ArrayList<>();
-        // 'items' here is your List<Map<String, Object>>
-        for (Map<String, Object> itemMap : items) {
-            MenuItem menuItem = new MenuItem();
-            menuItem.setName((String) itemMap.get("name"));
-
-            // Firestore might return numbers as Long or Double, so we handle it safely.
-            Object priceObj = itemMap.get("price");
-            if (priceObj instanceof Number) {
-                menuItem.setPrice(((Number) priceObj).doubleValue());
-            } else {
-                menuItem.setPrice(0.0); // Default value
-            }
-
-            // You can also extract other properties here if they exist in the map
-            // For example: menuItem.setId((String) itemMap.get("id"));
-
-            menuItemList.add(menuItem);
+    /**
+     * Helper to get price from item map
+     */
+    @Exclude
+    public static double getPriceFromItem(Map<String, Object> itemMap) {
+        Object priceObj = itemMap.get("price");
+        if (priceObj instanceof Double) {
+            return (Double) priceObj;
+        } else if (priceObj instanceof Long) {
+            return ((Long) priceObj).doubleValue();
+        } else if (priceObj instanceof Integer) {
+            return ((Integer) priceObj).doubleValue();
         }
-        return menuItemList;
+        return 0.0;
     }
 }
