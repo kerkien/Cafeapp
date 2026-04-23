@@ -180,6 +180,17 @@ We welcome contributions! To contribute to CafeApp:
 - Write clear comments for complex logic
 - Ensure all tests pass before submitting a PR
 
+## Screenshots
+
+A few screenshots from the app (staff management, admin login, QR generation, menu preview...).
+
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+  <img src="assets/screenshots/staff-management.png" alt="Staff Management" style="max-width:23%;height:auto;" />
+  <img src="assets/screenshots/admin-login.png" alt="Admin Login" style="max-width:23%;height:auto;" />
+  <img src="assets/screenshots/qr-codes.png" alt="QR Codes" style="max-width:23%;height:auto;" />
+  <img src="assets/screenshots/menu-preview.png" alt="Menu Preview" style="max-width:23%;height:auto;" />
+</div>
+
 ## 📚 Resources
 
 - [Android Developer Documentation](https://developer.android.com/)
@@ -232,35 +243,3 @@ This project is currently unlicensed. See the repository for licensing informati
 **Built with ❤️ for cafe enthusiasts and developers**
 
 Last Updated: April 23, 2026
-
-## Screenshots
-
-A few screenshots from the app (staff management, admin login, QR generation, menu preview).
-
-<p align="center">
-  <img src="assets/screenshots/staff-management.png" alt="Staff Management" width="360" />
-</p>
-<p align="center">
-  <em>Staff Management</em>
-</p>
-
-<p align="center">
-  <img src="assets/screenshots/admin-login.png" alt="Admin Login" width="360" />
-</p>
-<p align="center">
-  <em>Admin Login</em>
-</p>
-
-<p align="center">
-  <img src="assets/screenshots/qr-codes.png" alt="QR Codes / Table Setup" width="360" />
-</p>
-<p align="center">
-  <em>Generate QR codes for tables</em>
-</p>
-
-<p align="center">
-  <img src="assets/screenshots/menu-preview.png" alt="Menu Preview" width="360" />
-</p>
-<p align="center">
-  <em>Menu preview with items</em>
-</p>
