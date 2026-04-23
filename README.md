@@ -184,12 +184,44 @@ We welcome contributions! To contribute to CafeApp:
 
 A few screenshots from the app (staff management, admin login, QR generation, menu preview...).
 
-<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-  <img src="assets/screenshots/staff-management.png" alt="Staff Management" style="max-width:23%;height:auto;" />
-  <img src="assets/screenshots/admin-login.png" alt="Admin Login" style="max-width:23%;height:auto;" />
-  <img src="assets/screenshots/qr-codes.png" alt="QR Codes" style="max-width:23%;height:auto;" />
-  <img src="assets/screenshots/menu-preview.png" alt="Menu Preview" style="max-width:23%;height:auto;" />
-</div>
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/screenshots/staff-management.png" alt="Staff Management" width="220" /><br/>
+      <em>Staff Management</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/admin-login.png" alt="Admin Login" width="220" /><br/>
+      <em>Admin Login</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/qr-codes.png" alt="QR Codes" width="220" /><br/>
+      <em>QR Codes</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/menu-preview.png" alt="Menu Preview" width="220" /><br/>
+      <em>Menu Preview</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets/screenshots/order-confirmation.png" alt="Order Confirmation" width="220" /><br/>
+      <em>Order Confirmation</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/qr-scanner.png" alt="QR Scanner" width="220" /><br/>
+      <em>QR Scanner</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/table-menu.png" alt="Table Menu" width="220" /><br/>
+      <em>Table Menu</em>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/dashborad.png" alt="Dashborad" width="220" /><br/>
+      <em>Dashborad</em>
+    </td>
+  </tr>
+</table>
 
 ## 📚 Resources
 
